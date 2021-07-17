@@ -9,17 +9,20 @@ exports.createProduct = async (req, res, next) => {
   }
 };
 
-exports.getProduct = async (req, res, next) => {
+exports.getProducts = async (req, res, next) => {
   try {
+    const allProducts = await productModel.find({});
+    res.status(200).json(allProducts);
   } catch (error) {
     next(error);
   }
 };
 
-exports.getProducts = async (req, res, next) => {
+exports.getProductById = async (req, res, next) => {
   try {
-    const allProducts = await productModel.find({});
-    res.status(200).json(allProducts);
+    const product = await productModel.findById(req.params.productId);
+    if (!product) return res.status(404).send();
+    res.status(200).json(product);
   } catch (error) {
     next(error);
   }
